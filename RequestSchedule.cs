@@ -151,4 +151,20 @@ namespace ImportExportWebAPIExample
             return messages;
         }        
     }
+    //public class MajorGroup {
+
+    //    public long Id { get; set; }
+
+    //    public long ObjectNumber { get; set; }
+    //    /// <summary>
+    //    /// abcabcabc.
+    //    /// </summary>
+
+    //    public long HierarchyID { get; set; }
+
+    //    public long ReportGroup { get; set; }
+
+    //    public string Name { get; set; }
+
+    //}
 }

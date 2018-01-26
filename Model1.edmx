@@ -1,0 +1,596 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="APBMenuCatalogModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'APBMenuCatalog.sim.AB product mappings' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="AB product mappings">
+          <Property Name="Product ID" Type="varchar(max)" />
+          <Property Name="Type" Type="varchar(max)" />
+          <Property Name="Categories Categoryname" Type="varchar(max)" />
+          <Property Name="Products Product Name" Type="varchar(max)" />
+          <Property Name="Vendors City" Type="varchar(max)" />
+          <Property Name="Vendors External Reference" Type="varchar(max)" />
+        </EntityType>-->
+        <EntityType Name="FamilyGroup">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="ReportGroup" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="ParentMajorGroup" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="ObjectNumber" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="HierarchyId" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Hierarchy">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="OrganizationId" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="UnitType" Type="nvarchar(max)" />
+          <Property Name="ParentHierarchyId" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="HierarchyName" Type="nvarchar(max)" />
+          <Property Name="ObjectNumber" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="HierarchyId" Type="numeric" Precision="18" Scale="0" />
+        </EntityType>
+        <EntityType Name="MajorGroup">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="ReportGroup" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="ObjectNumber" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="HierarchyId" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'APBMenuCatalog.sim.MenuItemClass' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="MenuItemClass">
+          <Key>
+            <PropertyRef Name="ObjectNumber" />
+            <PropertyRef Name="HierarchyId" />
+          </Key>
+          <Property Name="Id" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="TaxClass" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="OptionBits" Type="nvarchar(max)" />
+          <Property Name="MainMenuLevel" Type="nvarchar(max)" />
+          <Property Name="SubMenuLevel" Type="nvarchar(max)" />
+          <Property Name="PrintingOptionBits" Type="nvarchar(max)" />
+          <Property Name="PrintGroup" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="PrivilegeGroup" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="SalesItemizer" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="DiscountItemizer" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="ServiceChargeItemizer" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="HighAmountLockout" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="MainLevelDefault" Type="bit" />
+          <Property Name="SubLevelDefault" Type="bit" />
+          <Property Name="CondimentOrderType" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="DefaultMasterGroup" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="CountEntry" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="CountDisplay" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="PricingCalculator" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="KDSOrDiningCourse" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="PrintClass" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="NextPanel" Type="nvarchar(max)" />
+          <Property Name="NextPage" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="CondimentPrefixType" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="KdsHighlightScheme" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="MaximumRefillCount" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="RefillDescriptor" Type="nvarchar(max)" />
+          <Property Name="CondimentOrderPopup" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="CondimentEditPopup" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="ServiceChargeGroup" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="MemberOfCondiments" Type="nvarchar(max)" />
+          <Property Name="RequiredCondiments" Type="nvarchar(max)" />
+          <Property Name="AllowedCondiments" Type="nvarchar(max)" />
+          <Property Name="ObjectNumber" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="HierarchyId" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'APBMenuCatalog.sim.MenuItemDefinition' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="MenuItemDefinition">
+          <Key>
+            <PropertyRef Name="HierarchyId" />
+            <PropertyRef Name="DefinitionSequence" />
+            <PropertyRef Name="MenuItemMasterId" />
+          </Key>
+          <Property Name="Id" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="FirstName" Type="nvarchar(max)" />
+          <Property Name="SecondName" Type="nvarchar(max)" />
+          <Property Name="ThirdName" Type="nvarchar(max)" />
+          <Property Name="SLUSort" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="Surcharge" Type="decimal" Precision="28" Scale="0" />
+          <Property Name="DefinitionOptionBits" Type="nvarchar(max)" />
+          <Property Name="SpecialCount" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="Icon" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="Tare" Type="decimal" Precision="28" Scale="0" />
+          <Property Name="PrepTime" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="NLU" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="MoveFlag" Type="bit" />
+          <Property Name="NLUGroup" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="SLU" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="MobileSLU" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="MainMenuLevel" Type="nvarchar(max)" />
+          <Property Name="SubMenuLevel" Type="nvarchar(max)" />
+          <Property Name="PrefixLevelOverride" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="PrintClassOverride" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="MenuItemClass" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="LongDescriptor" Type="nvarchar(max)" />
+          <Property Name="HierarchyId" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="DefinitionSequence" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="MenuItemMasterId" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'APBMenuCatalog.sim.MenuItemMaster' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="MenuItemMaster">
+          <Key>
+            <PropertyRef Name="ObjectNumber" />
+            <PropertyRef Name="HierarchyId" />
+          </Key>
+          <Property Name="Id" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="MasterName" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="ReportGroup" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="Status" Type="nvarchar(max)" />
+          <Property Name="MajorGroup" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="FamilyGroup" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="RecipeLink" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="MenuItemName" Type="nvarchar(max)" />
+          <Property Name="ObjectNumber" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="HierarchyId" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'APBMenuCatalog.sim.MenuItemPrice' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="MenuItemPrice">
+          <Key>
+            <PropertyRef Name="HierarchyId" />
+            <PropertyRef Name="PriceSequence" />
+            <PropertyRef Name="MenuItemDefID" />
+          </Key>
+          <Property Name="Id" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="PriceOptionBits" Type="nvarchar(max)" />
+          <Property Name="Price" Type="float" />
+          <Property Name="PrepCost" Type="float" />
+          <Property Name="MenuLevel" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="TaxClass" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="EffectivityGroup" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="ServiceChargeGroup" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="HierarchyId" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="PriceSequence" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="MenuItemDefID" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="APBMenuCatalogModelStoreContainer">
+          <EntitySet Name="FamilyGroup" EntityType="Self.FamilyGroup" Schema="sim" store:Type="Tables" />
+          <EntitySet Name="Hierarchy" EntityType="Self.Hierarchy" Schema="sim" store:Type="Tables" />
+          <EntitySet Name="MajorGroup" EntityType="Self.MajorGroup" Schema="sim" store:Type="Tables" />
+          <EntitySet Name="MenuItemClass" EntityType="Self.MenuItemClass" store:Type="Tables" store:Schema="sim">
+            <DefiningQuery>SELECT 
+    [MenuItemClass].[Id] AS [Id], 
+    [MenuItemClass].[Name] AS [Name], 
+    [MenuItemClass].[TaxClass] AS [TaxClass], 
+    [MenuItemClass].[OptionBits] AS [OptionBits], 
+    [MenuItemClass].[MainMenuLevel] AS [MainMenuLevel], 
+    [MenuItemClass].[SubMenuLevel] AS [SubMenuLevel], 
+    [MenuItemClass].[PrintingOptionBits] AS [PrintingOptionBits], 
+    [MenuItemClass].[PrintGroup] AS [PrintGroup], 
+    [MenuItemClass].[PrivilegeGroup] AS [PrivilegeGroup], 
+    [MenuItemClass].[SalesItemizer] AS [SalesItemizer], 
+    [MenuItemClass].[DiscountItemizer] AS [DiscountItemizer], 
+    [MenuItemClass].[ServiceChargeItemizer] AS [ServiceChargeItemizer], 
+    [MenuItemClass].[HighAmountLockout] AS [HighAmountLockout], 
+    [MenuItemClass].[MainLevelDefault] AS [MainLevelDefault], 
+    [MenuItemClass].[SubLevelDefault] AS [SubLevelDefault], 
+    [MenuItemClass].[CondimentOrderType] AS [CondimentOrderType], 
+    [MenuItemClass].[DefaultMasterGroup] AS [DefaultMasterGroup], 
+    [MenuItemClass].[CountEntry] AS [CountEntry], 
+    [MenuItemClass].[CountDisplay] AS [CountDisplay], 
+    [MenuItemClass].[PricingCalculator] AS [PricingCalculator], 
+    [MenuItemClass].[KDSOrDiningCourse] AS [KDSOrDiningCourse], 
+    [MenuItemClass].[PrintClass] AS [PrintClass], 
+    [MenuItemClass].[NextPanel] AS [NextPanel], 
+    [MenuItemClass].[NextPage] AS [NextPage], 
+    [MenuItemClass].[CondimentPrefixType] AS [CondimentPrefixType], 
+    [MenuItemClass].[KdsHighlightScheme] AS [KdsHighlightScheme], 
+    [MenuItemClass].[MaximumRefillCount] AS [MaximumRefillCount], 
+    [MenuItemClass].[RefillDescriptor] AS [RefillDescriptor], 
+    [MenuItemClass].[CondimentOrderPopup] AS [CondimentOrderPopup], 
+    [MenuItemClass].[CondimentEditPopup] AS [CondimentEditPopup], 
+    [MenuItemClass].[ServiceChargeGroup] AS [ServiceChargeGroup], 
+    [MenuItemClass].[MemberOfCondiments] AS [MemberOfCondiments], 
+    [MenuItemClass].[RequiredCondiments] AS [RequiredCondiments], 
+    [MenuItemClass].[AllowedCondiments] AS [AllowedCondiments], 
+    [MenuItemClass].[ObjectNumber] AS [ObjectNumber], 
+    [MenuItemClass].[HierarchyId] AS [HierarchyId]
+    FROM [sim].[MenuItemClass] AS [MenuItemClass]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="MenuItemDefinition" EntityType="Self.MenuItemDefinition" store:Type="Tables" store:Schema="sim">
+            <DefiningQuery>SELECT 
+    [MenuItemDefinition].[Id] AS [Id], 
+    [MenuItemDefinition].[FirstName] AS [FirstName], 
+    [MenuItemDefinition].[SecondName] AS [SecondName], 
+    [MenuItemDefinition].[ThirdName] AS [ThirdName], 
+    [MenuItemDefinition].[SLUSort] AS [SLUSort], 
+    [MenuItemDefinition].[Surcharge] AS [Surcharge], 
+    [MenuItemDefinition].[DefinitionOptionBits] AS [DefinitionOptionBits], 
+    [MenuItemDefinition].[SpecialCount] AS [SpecialCount], 
+    [MenuItemDefinition].[Icon] AS [Icon], 
+    [MenuItemDefinition].[Tare] AS [Tare], 
+    [MenuItemDefinition].[PrepTime] AS [PrepTime], 
+    [MenuItemDefinition].[NLU] AS [NLU], 
+    [MenuItemDefinition].[MoveFlag] AS [MoveFlag], 
+    [MenuItemDefinition].[NLUGroup] AS [NLUGroup], 
+    [MenuItemDefinition].[SLU] AS [SLU], 
+    [MenuItemDefinition].[MobileSLU] AS [MobileSLU], 
+    [MenuItemDefinition].[MainMenuLevel] AS [MainMenuLevel], 
+    [MenuItemDefinition].[SubMenuLevel] AS [SubMenuLevel], 
+    [MenuItemDefinition].[PrefixLevelOverride] AS [PrefixLevelOverride], 
+    [MenuItemDefinition].[PrintClassOverride] AS [PrintClassOverride], 
+    [MenuItemDefinition].[MenuItemClass] AS [MenuItemClass], 
+    [MenuItemDefinition].[LongDescriptor] AS [LongDescriptor], 
+    [MenuItemDefinition].[HierarchyId] AS [HierarchyId], 
+    [MenuItemDefinition].[DefinitionSequence] AS [DefinitionSequence], 
+    [MenuItemDefinition].[MenuItemMasterId] AS [MenuItemMasterId]
+    FROM [sim].[MenuItemDefinition] AS [MenuItemDefinition]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="MenuItemMaster" EntityType="Self.MenuItemMaster" store:Type="Tables" store:Schema="sim">
+            <DefiningQuery>SELECT 
+    [MenuItemMaster].[Id] AS [Id], 
+    [MenuItemMaster].[MasterName] AS [MasterName], 
+    [MenuItemMaster].[ReportGroup] AS [ReportGroup], 
+    [MenuItemMaster].[Status] AS [Status], 
+    [MenuItemMaster].[MajorGroup] AS [MajorGroup], 
+    [MenuItemMaster].[FamilyGroup] AS [FamilyGroup], 
+    [MenuItemMaster].[RecipeLink] AS [RecipeLink], 
+    [MenuItemMaster].[MenuItemName] AS [MenuItemName], 
+    [MenuItemMaster].[ObjectNumber] AS [ObjectNumber], 
+    [MenuItemMaster].[HierarchyId] AS [HierarchyId]
+    FROM [sim].[MenuItemMaster] AS [MenuItemMaster]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="MenuItemPrice" EntityType="Self.MenuItemPrice" store:Type="Tables" store:Schema="sim">
+            <DefiningQuery>SELECT 
+    [MenuItemPrice].[Id] AS [Id], 
+    [MenuItemPrice].[PriceOptionBits] AS [PriceOptionBits], 
+    [MenuItemPrice].[Price] AS [Price], 
+    [MenuItemPrice].[PrepCost] AS [PrepCost], 
+    [MenuItemPrice].[MenuLevel] AS [MenuLevel], 
+    [MenuItemPrice].[TaxClass] AS [TaxClass], 
+    [MenuItemPrice].[EffectivityGroup] AS [EffectivityGroup], 
+    [MenuItemPrice].[ServiceChargeGroup] AS [ServiceChargeGroup], 
+    [MenuItemPrice].[HierarchyId] AS [HierarchyId], 
+    [MenuItemPrice].[PriceSequence] AS [PriceSequence], 
+    [MenuItemPrice].[MenuItemDefID] AS [MenuItemDefID]
+    FROM [sim].[MenuItemPrice] AS [MenuItemPrice]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="APBMenuCatalogModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="FamilyGroup">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="ReportGroup" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ParentMajorGroup" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="ObjectNumber" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="HierarchyId" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Hierarchy">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="OrganizationId" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="UnitType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ParentHierarchyId" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="HierarchyName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ObjectNumber" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="HierarchyId" Type="Decimal" Precision="18" Scale="0" />
+        </EntityType>
+        <EntityType Name="MajorGroup">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ReportGroup" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="ObjectNumber" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="HierarchyId" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MenuItemClass">
+          <Key>
+            <PropertyRef Name="ObjectNumber" />
+            <PropertyRef Name="HierarchyId" />
+          </Key>
+          <Property Name="Id" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TaxClass" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="OptionBits" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MainMenuLevel" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SubMenuLevel" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PrintingOptionBits" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PrintGroup" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="PrivilegeGroup" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="SalesItemizer" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="DiscountItemizer" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="ServiceChargeItemizer" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="HighAmountLockout" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="MainLevelDefault" Type="Boolean" />
+          <Property Name="SubLevelDefault" Type="Boolean" />
+          <Property Name="CondimentOrderType" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="DefaultMasterGroup" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="CountEntry" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="CountDisplay" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="PricingCalculator" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="KDSOrDiningCourse" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="PrintClass" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="NextPanel" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NextPage" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="CondimentPrefixType" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="KdsHighlightScheme" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="MaximumRefillCount" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="RefillDescriptor" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CondimentOrderPopup" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="CondimentEditPopup" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="ServiceChargeGroup" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="MemberOfCondiments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="RequiredCondiments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AllowedCondiments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ObjectNumber" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="HierarchyId" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MenuItemDefinition">
+          <Key>
+            <PropertyRef Name="HierarchyId" />
+            <PropertyRef Name="DefinitionSequence" />
+            <PropertyRef Name="MenuItemMasterId" />
+          </Key>
+          <Property Name="Id" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="FirstName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SecondName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ThirdName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SLUSort" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="Surcharge" Type="Decimal" Precision="28" Scale="0" />
+          <Property Name="DefinitionOptionBits" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SpecialCount" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="Icon" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="Tare" Type="Decimal" Precision="28" Scale="0" />
+          <Property Name="PrepTime" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="NLU" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="MoveFlag" Type="Boolean" />
+          <Property Name="NLUGroup" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="SLU" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="MobileSLU" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="MainMenuLevel" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SubMenuLevel" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PrefixLevelOverride" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="PrintClassOverride" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="MenuItemClass" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="LongDescriptor" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="HierarchyId" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="DefinitionSequence" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="MenuItemMasterId" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MenuItemMaster">
+          <Key>
+            <PropertyRef Name="ObjectNumber" />
+            <PropertyRef Name="HierarchyId" />
+          </Key>
+          <Property Name="Id" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="MasterName" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="ReportGroup" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="Status" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MajorGroup" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="FamilyGroup" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="RecipeLink" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="MenuItemName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ObjectNumber" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="HierarchyId" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MenuItemPrice">
+          <Key>
+            <PropertyRef Name="HierarchyId" />
+            <PropertyRef Name="PriceSequence" />
+            <PropertyRef Name="MenuItemDefID" />
+          </Key>
+          <Property Name="Id" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="PriceOptionBits" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Price" Type="Double" />
+          <Property Name="PrepCost" Type="Double" />
+          <Property Name="MenuLevel" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="TaxClass" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="EffectivityGroup" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="ServiceChargeGroup" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="HierarchyId" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="PriceSequence" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="MenuItemDefID" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="APBMenuCatalogEntities2" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="FamilyGroups" EntityType="Self.FamilyGroup" />
+          <EntitySet Name="Hierarchies" EntityType="Self.Hierarchy" />
+          <EntitySet Name="MajorGroups" EntityType="Self.MajorGroup" />
+          <EntitySet Name="MenuItemClasses" EntityType="Self.MenuItemClass" />
+          <EntitySet Name="MenuItemDefinitions" EntityType="Self.MenuItemDefinition" />
+          <EntitySet Name="MenuItemMasters" EntityType="Self.MenuItemMaster" />
+          <EntitySet Name="MenuItemPrices" EntityType="Self.MenuItemPrice" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="APBMenuCatalogModelStoreContainer" CdmEntityContainer="APBMenuCatalogEntities2">
+          <EntitySetMapping Name="FamilyGroups">
+            <EntityTypeMapping TypeName="APBMenuCatalogModel.FamilyGroup">
+              <MappingFragment StoreEntitySet="FamilyGroup">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ReportGroup" ColumnName="ReportGroup" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ParentMajorGroup" ColumnName="ParentMajorGroup" />
+                <ScalarProperty Name="ObjectNumber" ColumnName="ObjectNumber" />
+                <ScalarProperty Name="HierarchyId" ColumnName="HierarchyId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Hierarchies">
+            <EntityTypeMapping TypeName="APBMenuCatalogModel.Hierarchy">
+              <MappingFragment StoreEntitySet="Hierarchy">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="OrganizationId" ColumnName="OrganizationId" />
+                <ScalarProperty Name="UnitType" ColumnName="UnitType" />
+                <ScalarProperty Name="ParentHierarchyId" ColumnName="ParentHierarchyId" />
+                <ScalarProperty Name="HierarchyName" ColumnName="HierarchyName" />
+                <ScalarProperty Name="ObjectNumber" ColumnName="ObjectNumber" />
+                <ScalarProperty Name="HierarchyId" ColumnName="HierarchyId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MajorGroups">
+            <EntityTypeMapping TypeName="APBMenuCatalogModel.MajorGroup">
+              <MappingFragment StoreEntitySet="MajorGroup">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ReportGroup" ColumnName="ReportGroup" />
+                <ScalarProperty Name="ObjectNumber" ColumnName="ObjectNumber" />
+                <ScalarProperty Name="HierarchyId" ColumnName="HierarchyId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MenuItemClasses">
+            <EntityTypeMapping TypeName="APBMenuCatalogModel.MenuItemClass">
+              <MappingFragment StoreEntitySet="MenuItemClass">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="TaxClass" ColumnName="TaxClass" />
+                <ScalarProperty Name="OptionBits" ColumnName="OptionBits" />
+                <ScalarProperty Name="MainMenuLevel" ColumnName="MainMenuLevel" />
+                <ScalarProperty Name="SubMenuLevel" ColumnName="SubMenuLevel" />
+                <ScalarProperty Name="PrintingOptionBits" ColumnName="PrintingOptionBits" />
+                <ScalarProperty Name="PrintGroup" ColumnName="PrintGroup" />
+                <ScalarProperty Name="PrivilegeGroup" ColumnName="PrivilegeGroup" />
+                <ScalarProperty Name="SalesItemizer" ColumnName="SalesItemizer" />
+                <ScalarProperty Name="DiscountItemizer" ColumnName="DiscountItemizer" />
+                <ScalarProperty Name="ServiceChargeItemizer" ColumnName="ServiceChargeItemizer" />
+                <ScalarProperty Name="HighAmountLockout" ColumnName="HighAmountLockout" />
+                <ScalarProperty Name="MainLevelDefault" ColumnName="MainLevelDefault" />
+                <ScalarProperty Name="SubLevelDefault" ColumnName="SubLevelDefault" />
+                <ScalarProperty Name="CondimentOrderType" ColumnName="CondimentOrderType" />
+                <ScalarProperty Name="DefaultMasterGroup" ColumnName="DefaultMasterGroup" />
+                <ScalarProperty Name="CountEntry" ColumnName="CountEntry" />
+                <ScalarProperty Name="CountDisplay" ColumnName="CountDisplay" />
+                <ScalarProperty Name="PricingCalculator" ColumnName="PricingCalculator" />
+                <ScalarProperty Name="KDSOrDiningCourse" ColumnName="KDSOrDiningCourse" />
+                <ScalarProperty Name="PrintClass" ColumnName="PrintClass" />
+                <ScalarProperty Name="NextPanel" ColumnName="NextPanel" />
+                <ScalarProperty Name="NextPage" ColumnName="NextPage" />
+                <ScalarProperty Name="CondimentPrefixType" ColumnName="CondimentPrefixType" />
+                <ScalarProperty Name="KdsHighlightScheme" ColumnName="KdsHighlightScheme" />
+                <ScalarProperty Name="MaximumRefillCount" ColumnName="MaximumRefillCount" />
+                <ScalarProperty Name="RefillDescriptor" ColumnName="RefillDescriptor" />
+                <ScalarProperty Name="CondimentOrderPopup" ColumnName="CondimentOrderPopup" />
+                <ScalarProperty Name="CondimentEditPopup" ColumnName="CondimentEditPopup" />
+                <ScalarProperty Name="ServiceChargeGroup" ColumnName="ServiceChargeGroup" />
+                <ScalarProperty Name="MemberOfCondiments" ColumnName="MemberOfCondiments" />
+                <ScalarProperty Name="RequiredCondiments" ColumnName="RequiredCondiments" />
+                <ScalarProperty Name="AllowedCondiments" ColumnName="AllowedCondiments" />
+                <ScalarProperty Name="ObjectNumber" ColumnName="ObjectNumber" />
+                <ScalarProperty Name="HierarchyId" ColumnName="HierarchyId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MenuItemDefinitions">
+            <EntityTypeMapping TypeName="APBMenuCatalogModel.MenuItemDefinition">
+              <MappingFragment StoreEntitySet="MenuItemDefinition">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="SecondName" ColumnName="SecondName" />
+                <ScalarProperty Name="ThirdName" ColumnName="ThirdName" />
+                <ScalarProperty Name="SLUSort" ColumnName="SLUSort" />
+                <ScalarProperty Name="Surcharge" ColumnName="Surcharge" />
+                <ScalarProperty Name="DefinitionOptionBits" ColumnName="DefinitionOptionBits" />
+                <ScalarProperty Name="SpecialCount" ColumnName="SpecialCount" />
+                <ScalarProperty Name="Icon" ColumnName="Icon" />
+                <ScalarProperty Name="Tare" ColumnName="Tare" />
+                <ScalarProperty Name="PrepTime" ColumnName="PrepTime" />
+                <ScalarProperty Name="NLU" ColumnName="NLU" />
+                <ScalarProperty Name="MoveFlag" ColumnName="MoveFlag" />
+                <ScalarProperty Name="NLUGroup" ColumnName="NLUGroup" />
+                <ScalarProperty Name="SLU" ColumnName="SLU" />
+                <ScalarProperty Name="MobileSLU" ColumnName="MobileSLU" />
+                <ScalarProperty Name="MainMenuLevel" ColumnName="MainMenuLevel" />
+                <ScalarProperty Name="SubMenuLevel" ColumnName="SubMenuLevel" />
+                <ScalarProperty Name="PrefixLevelOverride" ColumnName="PrefixLevelOverride" />
+                <ScalarProperty Name="PrintClassOverride" ColumnName="PrintClassOverride" />
+                <ScalarProperty Name="MenuItemClass" ColumnName="MenuItemClass" />
+                <ScalarProperty Name="LongDescriptor" ColumnName="LongDescriptor" />
+                <ScalarProperty Name="HierarchyId" ColumnName="HierarchyId" />
+                <ScalarProperty Name="DefinitionSequence" ColumnName="DefinitionSequence" />
+                <ScalarProperty Name="MenuItemMasterId" ColumnName="MenuItemMasterId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MenuItemMasters">
+            <EntityTypeMapping TypeName="APBMenuCatalogModel.MenuItemMaster">
+              <MappingFragment StoreEntitySet="MenuItemMaster">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="MasterName" ColumnName="MasterName" />
+                <ScalarProperty Name="ReportGroup" ColumnName="ReportGroup" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="MajorGroup" ColumnName="MajorGroup" />
+                <ScalarProperty Name="FamilyGroup" ColumnName="FamilyGroup" />
+                <ScalarProperty Name="RecipeLink" ColumnName="RecipeLink" />
+                <ScalarProperty Name="MenuItemName" ColumnName="MenuItemName" />
+                <ScalarProperty Name="ObjectNumber" ColumnName="ObjectNumber" />
+                <ScalarProperty Name="HierarchyId" ColumnName="HierarchyId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MenuItemPrices">
+            <EntityTypeMapping TypeName="APBMenuCatalogModel.MenuItemPrice">
+              <MappingFragment StoreEntitySet="MenuItemPrice">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="PriceOptionBits" ColumnName="PriceOptionBits" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="PrepCost" ColumnName="PrepCost" />
+                <ScalarProperty Name="MenuLevel" ColumnName="MenuLevel" />
+                <ScalarProperty Name="TaxClass" ColumnName="TaxClass" />
+                <ScalarProperty Name="EffectivityGroup" ColumnName="EffectivityGroup" />
+                <ScalarProperty Name="ServiceChargeGroup" ColumnName="ServiceChargeGroup" />
+                <ScalarProperty Name="HierarchyId" ColumnName="HierarchyId" />
+                <ScalarProperty Name="PriceSequence" ColumnName="PriceSequence" />
+                <ScalarProperty Name="MenuItemDefID" ColumnName="MenuItemDefID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

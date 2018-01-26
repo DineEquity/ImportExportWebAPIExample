@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Net;
+using System.Linq;
 using Newtonsoft.Json.Linq;
 using System.Configuration;
-using System.Web.Script.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text.RegularExpressions;
 
@@ -35,7 +35,8 @@ namespace ImportExportWebAPIExample
         static string EXP_RequestName = ConfigurationManager.AppSettings["EXP_RequestName"];
         static string EXP_UserName = ConfigurationManager.AppSettings["EXP_UserName"];
 
-       
+
+        
         static void Main(string[] args)
         {
             args[0] = "SUBMITEXPORTREQUEST"; // hardcoded by Leon P.
@@ -125,6 +126,8 @@ namespace ImportExportWebAPIExample
             byte[] byteArray;
             String[] arr;
             string responseStr;
+            var context = new APBMenuCatalogEntities();
+            //MajorGroup mgtable = new MajorGroup();
             Regex regexObj = new Regex(@"[^\d]");
             WebClient client = new WebClient();
                 try
@@ -145,8 +148,40 @@ namespace ImportExportWebAPIExample
                             byteArray[i] = Convert.ToByte(arr[i]);
                         }
                         var str = System.Text.Encoding.Default.GetString(byteArray);
+                        str = str.TrimEnd('\r', '\n'); //Remove last CRLF
+                       
+                        var csvRecords = str.Split(new string[] { Environment.NewLine }, StringSplitOptions.None).Skip(1).ToList(); //Skip column names, create a list of MajorGroup records
+
+                        csvRecords.ForEach(m =>
+                        {
+                            MajorGroup mg = m.ToMajorGroup();
+                            context.MajorGroups.Add(mg);
+                        }
+
+                        );
+
+
+                        //var MajorGroupItems = from line in str
+                        //    .Split(new string[] { Environment.NewLine }, StringSplitOptions.None) //Split each row
+                        //    .Skip(1) //Skip column names
+                        //            let col = line.Split(',') //split each column
+                        //            select new MajorGroup()
+                        //            {
+                        //                Id = Convert.ToInt64(col[0]),
+                        //                ObjectNumber = Convert.ToInt64(col[1]),
+                        //                HierarchyId = Convert.ToInt64(col[2]),
+                        //                Name = col[3].Trim(charsToTrim),
+                        //                ReportGroup = Convert.ToInt64(col[4])
+
+
+                        //            };
+
+
+
+
                         //File.WriteAllBytes(filePath, str);  //Save the byte array as a file to the path specified in filePath.
-                        File.WriteAllText(filePath, str);  //Save the string as a file to the path specified in filePath.
+                        // File.WriteAllText(filePath, str);  //Save the string as a file to the path specified in filePath.
+                        context.SaveChanges();
                     }
                         else        //retur ns simple string results
                         {
