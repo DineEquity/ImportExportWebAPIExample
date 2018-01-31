@@ -4,10 +4,10 @@ using System.Text;
 using System.IO;
 using System.Net;
 using System.Linq;
-using Newtonsoft.Json.Linq;
 using System.Configuration;
 using System.Runtime.Serialization.Json;
 using System.Text.RegularExpressions;
+using Newtonsoft.Json.Linq;
 
 namespace ImportExportWebAPIExample
 {
@@ -36,7 +36,7 @@ namespace ImportExportWebAPIExample
         static string EXP_UserName = ConfigurationManager.AppSettings["EXP_UserName"];
 
 
-        
+
         static void Main(string[] args)
         {
             args[0] = "SUBMITEXPORTREQUEST"; // hardcoded by Leon P.
@@ -130,36 +130,72 @@ namespace ImportExportWebAPIExample
             //MajorGroup mgtable = new MajorGroup();
             Regex regexObj = new Regex(@"[^\d]");
             WebClient client = new WebClient();
-                try
+            try
+            {
+                if (GetAuthToken(client)) //Attempt to get authorization from the security service.
                 {
-                    if (GetAuthToken(client)) //Attempt to get authorization from the security service.
+                    if (methodName.ToUpper().StartsWith("GETFILEDATA"))  //returns a file as a byte array
                     {
-                        if (methodName.ToUpper().StartsWith("GETFILEDATA"))  //returns a file as a byte array
-                        {
-                            
+
                         byte[] json = client.DownloadData(DataServiceURL + "/" + methodName);   //Attempt to call webservice method and retrieve a byte array.
 
                         responseStr = System.Text.Encoding.UTF8.GetString(json);
                         arr = responseStr.Substring(1, responseStr.Length - 1).Split(',');
                         byteArray = new byte[arr.Length];
-                        for (i = 0; i <= arr.Length - 1; i++) 
+                        for (i = 0; i <= arr.Length - 1; i++)
                         {
                             arr[i] = regexObj.Replace(arr[i], ""); // format all values in arr[i] to be numeric or else GPF
                             byteArray[i] = Convert.ToByte(arr[i]);
                         }
                         var str = System.Text.Encoding.Default.GetString(byteArray);
                         str = str.TrimEnd('\r', '\n'); //Remove last CRLF
-                       
+
                         var csvRecords = str.Split(new string[] { Environment.NewLine }, StringSplitOptions.None).Skip(1).ToList(); //Skip column names, create a list of MajorGroup records
+                                                                                                                                    //var dbSetProperties = typeof(APBMenuCatalogEntities).GetProperties().Where(p => p.PropertyType.GetGenericTypeDefinition() == typeof(DbSet<>));
 
-                        csvRecords.ForEach(m =>
+                        if (string.Compare(EXP_ObjectType, "MajorGroup") == 0)
                         {
-                            MajorGroup mg = m.ToMajorGroup();
-                            context.MajorGroups.Add(mg);
+                            context.MajorGroups.RemoveRange(context.MajorGroups.Where(c => c.Id > 0)); // delete all records prior to insertion of new records
+                            context.SaveChanges();
+                            csvRecords.ForEach(m =>
+                            {
+                                MajorGroup mg = m.ToMajorGroup();
+                                context.MajorGroups.Add(mg);
+                            }
+
+                            );
+
                         }
+                        else if (string.Compare(EXP_ObjectType, "FamilyGroup") == 0)
+                        {
 
-                        );
 
+                            context.FamilyGroups.RemoveRange(context.FamilyGroups.Where(c => c.Id > 0)); // delete all records prior to insertion of new records
+                            context.SaveChanges();
+                            csvRecords.ForEach(m =>
+                            {
+                                FamilyGroup mg = m.ToFamilyGroup();
+                                context.FamilyGroups.Add(mg);
+                            }
+
+                            );
+                            
+                        }
+                        else if (string.Compare(EXP_ObjectType, "Hierarchy") == 0)
+                        {
+
+
+                            context.Hierarchies.RemoveRange(context.Hierarchies.Where(c => c.Id > 0)); // delete all records prior to insertion of new records
+                            context.SaveChanges();
+                            csvRecords.ForEach(m =>
+                            {
+                                Hierarchy mg = m.ToHierarchy();
+                                context.Hierarchies.Add(mg);
+                            }
+
+                            );
+
+                        }
 
                         //var MajorGroupItems = from line in str
                         //    .Split(new string[] { Environment.NewLine }, StringSplitOptions.None) //Split each row
@@ -183,8 +219,8 @@ namespace ImportExportWebAPIExample
                         // File.WriteAllText(filePath, str);  //Save the string as a file to the path specified in filePath.
                         context.SaveChanges();
                     }
-                        else        //retur ns simple string results
-                        {
+                    else        //retur ns simple string results
+                    {
                         // Operations:
                         //methodName = "GetImportableTypes";
                         //methodName = "GetExportableTypes";
@@ -194,23 +230,23 @@ namespace ImportExportWebAPIExample
                         // methodName = "GetServerTimeWithZone"; 400 bad request
                         // methodName = "GetSupportedLanguages";
                         //methodName = "UpdateScheduleStatus"; method not allowed http 405
-                        
+
                         var json = client.DownloadString(DataServiceURL + "/" + methodName + "/api spec/");   //Attempt to call webservice method and retrieve a string.
                         //var json = client.DownloadString(DataServiceURL + "/" + methodName );   //Attempt to call webservice method and retrieve a string.
                         ConsoleWriteJsonList(json); //Generates a List from the returned data
-                        }
                     }
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Error: " + ex.Message);
-                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+            }
 
         }
 
 
 
-        
+
 
         /// <summary>
         /// This call is never directly called and only exists as an example.
@@ -237,7 +273,7 @@ namespace ImportExportWebAPIExample
             GetAuthToken(client);
 
             //this returns a html page with a list of all the current webservice methods. It won't be very readable in the console.
-            var json = client.DownloadString(DataServiceURL + "Help");  
+            var json = client.DownloadString(DataServiceURL + "Help");
             ConsoleWriteJsonList(json);
         }
 
@@ -314,12 +350,12 @@ namespace ImportExportWebAPIExample
 
                 //Deserialize using the RequestSchedule class. There is a useful article covering this at
                 // http://blog.anthonybaker.me/2013/05/how-to-consume-json-rest-api-in-net.html 
-                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(List<RequestSchedule>)); 
+                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(List<RequestSchedule>));
                 using (var ms = new MemoryStream(Encoding.Unicode.GetBytes(json)))
                 {
                     ScheduleList = (List<RequestSchedule>)serializer.ReadObject(ms);
                 }
-          
+
                 //search the list of RequestSchedule objects for one matching the scheduleID provided as a parameter
                 RequestSchedule schedule = ScheduleList.Find(rs => rs.Id == schedID);
 
@@ -334,8 +370,8 @@ namespace ImportExportWebAPIExample
                     {
                         client.Headers.Add("Content-Type", "application/json");  //Let the server know what type of content we are sending
                         //Serialize and send the updated schedule to the webservice.
-                        json = client.UploadString(DataServiceURL + "UpdateScheduleStatus", Serialize(schedule));  
-                        Console.WriteLine(json);  
+                        json = client.UploadString(DataServiceURL + "UpdateScheduleStatus", Serialize(schedule));
+                        Console.WriteLine(json);
                         //Tell the user we are successful, and remind them what we did.
                         Console.WriteLine(string.Format("Schedule ID {0} is set to {1}", schedID, setScheduleActive.ToString()));
                     }
@@ -377,7 +413,7 @@ namespace ImportExportWebAPIExample
             IEFieldDict.Add("Friday", true);
             IEFieldDict.Add("Saturday", true);
             IEFieldDict.Add("Sunday", true);
-            IEFieldDict.Add("TimeOfDay", string.Format(@"\/Date({0})\/", ToUnixEpoch(new DateTime(2000, 1, 1, 8, 0, 0),true)));
+            IEFieldDict.Add("TimeOfDay", string.Format(@"\/Date({0})\/", ToUnixEpoch(new DateTime(2000, 1, 1, 8, 0, 0), true)));
             IEFieldDict.Add("OrgCode", OrgCode);
             IEFieldDict.Add("Name", "NewManualSchedule2");
             IEFieldDict.Add("StartDate", string.Format(@"\/Date({0})\/", ToUnixEpoch(DateTime.Now.AddHours(5), true)));
@@ -391,19 +427,19 @@ namespace ImportExportWebAPIExample
                 if (item.Value is string && !item.Value.Substring(0, 1).Equals("["))
                     sb.Append("\"" + item.Key + "\"" + ":" + "\"" + item.Value + "\",");
                 else if (item.Value is Boolean)
-                    sb.Append("\"" + item.Key + "\"" + ":" + (item.Value?"true":"false") + ", ");
+                    sb.Append("\"" + item.Key + "\"" + ":" + (item.Value ? "true" : "false") + ", ");
                 else
                     sb.Append("\"" + item.Key + "\"" + ":" + item.Value + ", ");
             }
 
             string FinalJson = "{" + sb.ToString().Substring(0, sb.Length - 1) + "}";  //Surround the string with {} to meet Json specifications
 
-                WebClient client = new WebClient();
-                GetAuthToken(client);
+            WebClient client = new WebClient();
+            GetAuthToken(client);
 
-                client.Headers.Add("Content-Type", "application/json");  //Let the server know what type of content we are sending
-                var json = client.UploadString(DataServiceURL + "AddSchedule", FinalJson);
-                Console.WriteLine(json);
+            client.Headers.Add("Content-Type", "application/json");  //Let the server know what type of content we are sending
+            var json = client.UploadString(DataServiceURL + "AddSchedule", FinalJson);
+            Console.WriteLine(json);
         }
 
 
@@ -465,7 +501,8 @@ namespace ImportExportWebAPIExample
             Console.WriteLine("Press ESC to stop");
             do
             {
-                while (! Console.KeyAvailable && keepTrying) {
+                while (!Console.KeyAvailable && keepTrying)
+                {
                     try
                     {
                         //string jsonResponse = client.DownloadString(DataServiceURL + "GetRequestStatus/" + requestID + "/" + OrgCode);
@@ -500,7 +537,7 @@ namespace ImportExportWebAPIExample
                     }
                     System.Threading.Thread.Sleep(TimeSpan.FromSeconds(1));  // For real life applications use Task Scheduler rather than this.
                 }
-            } while (keepTrying && DateTime.UtcNow - startTime < TimeSpan.FromMinutes(timeoutMinutes) && Console.ReadKey(true).Key != ConsoleKey.Escape); 
+            } while (keepTrying && DateTime.UtcNow - startTime < TimeSpan.FromMinutes(timeoutMinutes) && Console.ReadKey(true).Key != ConsoleKey.Escape);
 
             // Download Request
             if (statusCode == RequestStatus.Complete || statusCode == RequestStatus.CompletedWithErrors)
@@ -593,8 +630,8 @@ namespace ImportExportWebAPIExample
                 //IEFieldDict.Add("SelectedOperation", (int)999);   //deliberate error for error handling
                 IEFieldDict.Add("UserName", string.IsNullOrEmpty(EXP_UserName) ? UserName : EXP_UserName);  //username from constants
 
-               
-               
+
+
                 StringBuilder sb = new StringBuilder();
                 try
                 {
@@ -625,21 +662,21 @@ namespace ImportExportWebAPIExample
             {  //Import
                 Dictionary<string, dynamic> IEFieldDict = new Dictionary<string, dynamic>();
 
-                try 
-	            {	        
+                try
+                {
                     byte[] ImportFile = System.IO.File.ReadAllBytes(filePath);
                     StringBuilder ByteArrayString = new StringBuilder();
-                    foreach(byte Byte in ImportFile)
+                    foreach (byte Byte in ImportFile)
                     {
                         ByteArrayString.Append(Byte.ToString() + ",");
                     }
-                    IEFieldDict.Add("DataForImport", "[" + ByteArrayString.ToString().Substring(0, ByteArrayString.Length-1) + "]");
-	            }
-	            catch (Exception ex)
-	            {
+                    IEFieldDict.Add("DataForImport", "[" + ByteArrayString.ToString().Substring(0, ByteArrayString.Length - 1) + "]");
+                }
+                catch (Exception ex)
+                {
                     Console.WriteLine("Error reading file for Import: " + ex.Message);
                     return false;   //Can't proceed without a file.
-	            }
+                }
 
                 IEFieldDict.Add("DataSince", string.Format(@"\/Date({0})\/", ToUnixEpoch(DateTime.Now.AddDays(-30), true)));
 
@@ -663,7 +700,7 @@ namespace ImportExportWebAPIExample
                 }
                 IEFieldDict.Add("ObjectType", FullObjectName);
 
-               // string ObjectMembers = GetColumnsForObject(FullObjectName);
+                // string ObjectMembers = GetColumnsForObject(FullObjectName);
 
                 //IEFieldDict.Add("SelectedObjectMembers", ObjectMembers);
 
@@ -706,14 +743,14 @@ namespace ImportExportWebAPIExample
 
             var json = client.DownloadString(DataServiceURL + "GetHierarchyStructure/" + UserName + "/" + OrgCode);
             //Converts the Json string to an array of the results. Each member will be a different Hierarchy level in this case.
-            JArray HierarchyResponse = JArray.Parse(json);  
+            JArray HierarchyResponse = JArray.Parse(json);
 
             //Intialise the OUT results.
-            HierStructID = 0;  
+            HierStructID = 0;
             LanguageID = 0;
 
             // This will be used to respond on if we were successful.
-            bool FoundHierStruct = false; 
+            bool FoundHierStruct = false;
 
             foreach (JToken HierarchyItem in HierarchyResponse)
             {
@@ -722,7 +759,7 @@ namespace ImportExportWebAPIExample
                 {   //Found the location!
                     HierStructID = (int)HierarchyItem["Id"];
                     LanguageID = (int)HierarchyName["LangId"];   //Use the same language as Location Name, though you could call the seperate GetSupportedLanguages method to see all that are available.
-                    FoundHierStruct = true;  
+                    FoundHierStruct = true;
                     break;  //No need to search Further
                 }
             }
@@ -774,7 +811,7 @@ namespace ImportExportWebAPIExample
         /// </summary>
         /// <param name="FullObjectName">Fully qualified name of object (see TryGetExportObject)</param>
         /// <returns>true if object is found.</returns>
-        private static string GetColumnsForObject( string FullObjectName)
+        private static string GetColumnsForObject(string FullObjectName)
         {
 
             WebClient client = new WebClient();
@@ -802,7 +839,7 @@ namespace ImportExportWebAPIExample
 
             //01Apr2016 | BKurundupotha | 122088 - Building JSON string to call Http POST method
             string loginString = BuildLoginString(UserName, Password, OrgCode);
-           
+
             //Send the request and stored the result in the token string.
             //The string is returned with surrounding quotation marks, and must be adjusted before being added to the client header
             //  i.e "\"IExb6b4734c-9a53-4971-8ad0-6fa959f0a7218ba8ee6243ee073d6e99c5e08ea4e16eeb74cfc2\""
@@ -844,7 +881,7 @@ namespace ImportExportWebAPIExample
         /// <param name="password"></param>
         /// <param name="orgCode"></param>
         /// <returns></returns>
-        private static string BuildLoginString( string userName, string password, string orgCode )
+        private static string BuildLoginString(string userName, string password, string orgCode)
         {
             string finalJson = string.Empty;
 

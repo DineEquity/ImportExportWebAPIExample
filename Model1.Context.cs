@@ -10,9 +10,11 @@
 namespace ImportExportWebAPIExample
 {
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
-    using System.Data.Entity.Infrastructure;
-    
+    using System.Data.Entity.Infrastructure;    
+    using System.Reflection;
+
     public partial class APBMenuCatalogEntities : DbContext
     {
         public APBMenuCatalogEntities()
@@ -33,4 +35,5 @@ namespace ImportExportWebAPIExample
         public virtual DbSet<MenuItemMaster> MenuItemMasters { get; set; }
         public virtual DbSet<MenuItemPrice> MenuItemPrices { get; set; }
     }
+
 }
